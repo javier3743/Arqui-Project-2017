@@ -1,3 +1,4 @@
+
 /* 
  *Javier Palacios Garcia -1525286
  *Jose David Vargas - 1529176
@@ -8,11 +9,11 @@
 //el tiempor que se le da al sensor para calibrar.
 int calibrationTime = 30;        
 
-//El tiemrpo que el sesonr tira una señal "low
+//El tiempo que el sesonr tira una señal "low"
 long unsigned int lowIn;         
 
 //Tiempo que deber de estar en señal "low" para que podamos decir que ya no hay movimento
-long unsigned int Pause = 50000;  
+long unsigned int Pause = 8000;
 
 boolean lockLow = true;
 boolean takeLowTime;  
@@ -24,7 +25,9 @@ void setup(){
   Serial.begin(9600);
   pinMode(pirPin, INPUT);
   pinMode(ledPin, OUTPUT);
+  pinMode(10, OUTPUT);
   digitalWrite(pirPin, LOW);
+  
 
   //Calibracion
   Serial.print("Calibrando Sensor ");
@@ -35,6 +38,8 @@ void setup(){
     Serial.println(" Listo ");
     Serial.println("Sensor Activo");
     delay(50);
+   
+
   }
 
 
@@ -48,13 +53,12 @@ void loop(){
          Serial.print("Movimiento Detectado a los ");
          Serial.print(millis()/1000);
          Serial.println(" sec"); 
-         delay(50);
+         delay(5);
          }         
          takeLowTime = true;
        }
 
-     if(digitalRead(pirPin) == LOW){       
-       digitalWrite(ledPin, LOW);  
+     if(digitalRead(pirPin) == LOW){        
 
        if(takeLowTime){
         lowIn = millis();          
@@ -67,5 +71,6 @@ void loop(){
            Serial.println(" sec");
            delay(50);
            }
+           digitalWrite(ledPin, LOW); 
        }
   }
